@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Sozvon Time Killer",
+  "version": "1.0.0",
+  "description": "Simple 2048 game build with react",
+  "action": {
+    "default_popup": "index.html"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "permissions": [
+    "declarativeNetRequest",
+    "storage"
+  ]
+}
