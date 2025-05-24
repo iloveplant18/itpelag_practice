@@ -1,6 +1,6 @@
 import MenuPage from "@/pages/menu";
 import { HashRouter, Route, Routes } from "react-router";
-import BaseLayout from "@/app/ui/base-layout";
+import BaseLayout from "@/shared/ui/base-layout";
 import GamePage from "@/pages/game";
 
 export default function Routing() {

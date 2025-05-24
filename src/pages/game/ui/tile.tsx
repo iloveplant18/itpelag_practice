@@ -28,11 +28,11 @@ const calcStylesByValue = cache((value: number) => {
   }
 })
 
-export default function Tile({value, position, className, ...props}: TileProps) {
+export default function Tile({value, position, className, style, ...props}: TileProps) {
   return (
     <div
       className={twMerge(`absolute w-1/4 grid place-items-center aspect-square rounded-md border-border border ${calcStylesByValue(value)}`, className)}
-      style={{top: `${25 * position.y}%`, left: `${25 * position.x}%`}}
+      style={{top: `${25 * position.y}%`, left: `${25 * position.x}%`, ...style}}
       {...props}
     >
       {value}

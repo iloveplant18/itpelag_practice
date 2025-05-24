@@ -3,6 +3,18 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@property --x-shift {
+  syntax: "<integer>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --y-shift {
+  syntax: "<integer>";
+  inherits: true;
+  initial-value: 0;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -42,6 +54,7 @@
 
   --animation-duration: 0.3s;
   --animate-create: create var(--animation-duration) ease-in-out 1 normal forwards;
+  --animate-move: move var(--animation-duration) ease-in-out 1 normal forwards;
 
   @keyframes create {
     from {
@@ -53,6 +66,15 @@
     }
     to {
       scale: 1;
+    }
+  }
+
+  @keyframes move {
+    from {
+      translate: calc(var(--x-shift) * 100%) calc(var(--y-shift) * 100%);
+    }
+    to {
+      translate: 0;
     }
   }
 }

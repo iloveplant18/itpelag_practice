@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 import Header from "./header.tsx";
 
-export default function Layout() {
+export default function BaseLayout() {
   return (
     <div className="bg-background min-h-screen flex flex-col">
       <Header />
