@@ -4,10 +4,13 @@ export type Position = {
   y: number;
 }
 
+type TileId = number;
+
 export type Tile = {
-  id: number;
+  id: TileId;
   value: number;
   position: Position;
+  mergeHistory: TileId[],
 };
 
 export type GameStatus = "start" | "play" | "game over";
@@ -15,7 +18,6 @@ export type GameStatus = "start" | "play" | "game over";
 export type GameInfo = {
   history: GameSnapshot[];
   currentHistoryIndex: number;
-  gameStatus: GameStatus;
 }
 
 export type MoveDirection = "up" | "left" | "right" | "down";
@@ -31,4 +33,9 @@ export type GameActions = {
   startGame: () => void;
   moveUpInHistory: () => void;
   moveDownInHistory: () => void;
+}
+
+export type AnimationInfo = {
+  keyframes: Keyframe[];
+  options: KeyframeAnimationOptions;
 }

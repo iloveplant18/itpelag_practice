@@ -1,28 +1,26 @@
 import {useState, useMemo, useCallback} from "react";
-import type {Tile, GameStatus, Position} from "@/pages/game/lib/types";
+import type {Tile, Position, GameStatus} from "@/pages/game/lib/types";
 import {NeverError} from "@/shared/lib";
 import type {GameActions, GameInfo, GameSnapshot, MoveDirection} from "@/pages/game/lib/types";
+import {boardSize} from "@/pages/game/lib/consts";
 
 type GroupedTiles = Record<number, Tile[]>;
-import {boardSize} from "@/pages/game/lib/consts";
 
 export default function useGame() {
   const [history, setHistory] = useState<GameSnapshot[]>([]);
   const [currentHistoryIndex, setCurrentHistoryIndex] = useState<number>(-1);
-  const [gameStatus, setGameStatus] = useState<GameStatus>("start");
 
   const startGame = useCallback(() => {
-    const startTiles = createStartGameSnapshot();
-    setHistory([startTiles]);
+    const startGameSnapshot = createStartGameSnapshot();
+    setHistory([startGameSnapshot]);
     setCurrentHistoryIndex(0);
-    setGameStatus("play");
   }, [])
 
-  const move = useCallback((direction: MoveDirection) => {
-    const groupingTarget = direction === "up" || direction === "down" ? "column" : "row";
-    let groupedTiles = groupTilesBy(history[currentHistoryIndex], groupingTarget);
+  const move = useCallback((moveDirection: MoveDirection) => {
+    const groupingTarget = moveDirection === "up" || moveDirection === "down" ? "column" : "row";
+    let groupedTiles = groupTilesBy(history[currentHistoryIndex].tiles, groupingTarget);
     groupedTiles = mergeTilesWithSameValues(groupedTiles);
-    switch (direction) {
+    switch (moveDirection) {
       case "up":
         groupedTiles = moveTilesUp(groupedTiles);
         break;
@@ -36,16 +34,22 @@ export default function useGame() {
         groupedTiles = moveTilesDown(groupedTiles);
         break;
       default:
-        throw new NeverError(direction);
+        throw new NeverError(moveDirection);
     }
     const tiles = degroupTiles(groupedTiles);
     const newTile = createTileAtRandomFreePosition(tiles);
+    let gameStatus: GameStatus = "play";
     if (!newTile) {
-      setGameStatus("game over");
-      return;
+      gameStatus = "game over";
+    } else {
+      tiles.push(newTile);
     }
-    tiles.push(newTile);
-    const newHistory = [...history.slice(0, currentHistoryIndex + 1), tiles];
+    const newGameSnapshot: GameSnapshot = {
+      tiles,
+      gameStatus,
+      moveDirection,
+    }
+    const newHistory = [...history.slice(0, currentHistoryIndex + 1), newGameSnapshot];
     setHistory(newHistory);
     setCurrentHistoryIndex(newHistory.length - 1);
   }, [history, currentHistoryIndex]);
@@ -68,8 +72,7 @@ export default function useGame() {
   const gameInfo: GameInfo = useMemo(() => ({
     currentHistoryIndex,
     history,
-    gameStatus,
-  }), [currentHistoryIndex, history, gameStatus]);
+  }), [currentHistoryIndex, history]);
 
   return {gameInfo, gameActions};
 }
@@ -102,6 +105,7 @@ function createTileAtRandomFreePosition(tiles: Tile[]): Tile | null {
     id: tilesId++,
     value: 2,
     position: freePosition,
+    mergeHistory: [],
   }
 }
 
@@ -143,28 +147,22 @@ function groupTilesBy(tiles: Tile[], groupingTarget: "column" | "row") {
 
 function mergeTilesWithSameValues(groupedTiles: GroupedTiles) {
   for (const i in groupedTiles) {
-    while (true) {
-      const neighbors = getIndexesOfNeighborsWithSameValue(groupedTiles[i]);
-      if (neighbors) {
-        groupedTiles[i].splice(neighbors[1], 1);
-        groupedTiles[i][neighbors[0]] = {
-          ...groupedTiles[i][neighbors[0]],
-          value: groupedTiles[i][neighbors[0]].value * 2
+    for (let j = 0; j < groupedTiles[i].length -1; j++) {
+      if (groupedTiles[i][j].value === groupedTiles[i][j + 1].value) {
+        groupedTiles[i][j] = {
+          ...groupedTiles[i][j],
+          value: groupedTiles[i][j].value * 2,
+          mergeHistory: [
+            ...groupedTiles[i][j].mergeHistory,
+            groupedTiles[i][j + 1].id
+          ],
         };
+        groupedTiles[i].splice(j + 1, 1);
         continue;
       }
-      break;
     }
   }
   return groupedTiles;
-}
-
-function getIndexesOfNeighborsWithSameValue(tiles: Tile[]): [number, number] | undefined {
-  for (let i = 0; i < tiles.length - 1; i++) {
-    if (tiles[i].value === tiles[i + 1].value) {
-      return [i, i + 1];
-    }
-  }
 }
 
 function degroupTiles(groupedTiles: GroupedTiles) {
