@@ -14,15 +14,17 @@ type TileWithAnimationInfo = {
   animationInfo: AnimationInfo,
 };
 
-const animationDuration = 200;
+const animationDuration = 100;
+
 const createdAnimationInfo: AnimationInfo = {
   keyframes: [
-      {scale: 0.2},
+      {scale: 0.5},
       {scale: 1.1},
       {scale: 1},
   ],
   options: {
-    duration: animationDuration,
+    duration: animationDuration * 2,
+    delay: 100,
   }
 }
 
@@ -34,13 +36,9 @@ const initialGameSnapshot: GameSnapshot = {
 
 export default function TilesToRender() {
   const {history, currentHistoryIndex} = useContext(gameInfoContext) as GameInfo;
-  const previousHistoryIndex = useRef(currentHistoryIndex);
+  const previousHistoryIndex = currentHistoryIndex - 1;
 
-  useEffect(() => {
-    previousHistoryIndex.current = currentHistoryIndex;
-  }, [currentHistoryIndex]);
-
-  const previousGameSnapshot: GameSnapshot = history[previousHistoryIndex.current] ?? initialGameSnapshot;
+  const previousGameSnapshot: GameSnapshot = history[previousHistoryIndex] ?? initialGameSnapshot;
   const currentGameSnapshot: GameSnapshot = history[currentHistoryIndex] ?? initialGameSnapshot;
 
   const tilesWithAnimations = getTilesWithAnimation(previousGameSnapshot, currentGameSnapshot);
@@ -105,18 +103,6 @@ function getTilesWithAnimation(previousGameSnapshot: GameSnapshot, currentGameSn
   return result;
 }
 
-function createTilesComponents(tiles: TileWithAnimationInfo[]): ReactElement[] {
-  return tiles.map(tile => (
-      <Tile
-        keyframes={tile.animationInfo.keyframes}
-        animationOptions={tile.animationInfo.options}
-        key={tile.tileInfo.id}
-        value={tile.tileInfo.value}
-        position={tile.tileInfo.position}
-      />
-  ))
-}
-
 function getTileById(id: number, tilesArray: TileType[]) {
   for (let tile of tilesArray) {
     if (tile.id === id)
@@ -150,4 +136,16 @@ function getDeletedTilesWithAnimation(previousTiles: TileType[], currentTiles: T
       }
     }
   })
+}
+
+function createTilesComponents(tiles: TileWithAnimationInfo[]): ReactElement[] {
+  return tiles.map(tile => (
+      <Tile
+        keyframes={tile.animationInfo.keyframes}
+        animationOptions={tile.animationInfo.options}
+        key={tile.tileInfo.id}
+        value={tile.tileInfo.value}
+        position={tile.tileInfo.position}
+      />
+  ))
 }

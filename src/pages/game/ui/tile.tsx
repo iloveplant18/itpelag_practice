@@ -36,7 +36,6 @@ export default function Tile({keyframes, animationOptions, value, position, clas
   useEffect(() => {
     if (ref.current && keyframes) {
       ref.current.animate(keyframes, animationOptions);
-      console.log("animating tile at pos", position);
     }
   }, [keyframes, animationOptions]);
 
