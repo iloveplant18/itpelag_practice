@@ -6,7 +6,7 @@ import useKeyboardControl from "@/pages/game/model/useKeyboardControl.ts";
 
 
 const GameControls = () => {
-  const {move, moveDownInHistory, moveUpInHistory, startGame} = useContext(gameActionsContext) as GameActions;
+  const {startGame} = useContext(gameActionsContext) as GameActions;
   const {history, currentHistoryIndex} = useContext(gameInfoContext) as GameInfo;
 
   const gameStatus = history[currentHistoryIndex]?.gameStatus ?? 'start';
@@ -14,7 +14,7 @@ const GameControls = () => {
   useKeyboardControl();
 
   return (
-    <div className="mt-5 flex flex-col items-stretch">
+    <div className="mt-2 flex flex-col items-stretch">
       {gameStatus !== 'play' && <Button className="uppercase" onClick={startGame}>start</Button>}
     </div>
   )

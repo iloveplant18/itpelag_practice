@@ -1,7 +1,7 @@
 import type { AnimationInfo, GameInfo, GameSnapshot, Tile as TileType } from "@/pages/game/lib/types.ts";
 import { gameInfoContext } from "@/pages/game/model/game-provider.tsx";
 import Tile from "@/pages/game/ui/tile.tsx";
-import { ReactElement, useContext, useEffect, useRef } from "react";
+import { ReactElement, useContext } from "react";
 
 
 type MoveInfo = {

@@ -8,7 +8,7 @@ export default function MenuPage() {
         <Link to={"/game"}>Start</Link>
       </Button>
       <Button asChild>
-        <Link to={"/"}>Settings</Link>
+        <Link to={"/settings"}>Settings</Link>
       </Button>
       <Button asChild>
         <Link to={"/"}>Leaderboard</Link>

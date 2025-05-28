@@ -8,6 +8,8 @@ export default function useKeyboardControl() {
 
   useEffect(() => {
     const keydownHandler = (event: KeyboardEvent) => {
+      if (event.altKey || event.ctrlKey || event.metaKey) return;
+
       switch (event.key) {
         case "ArrowUp":
           move("up");

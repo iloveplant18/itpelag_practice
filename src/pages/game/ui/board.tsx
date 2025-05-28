@@ -3,6 +3,7 @@ import {boardSize} from "@/pages/game/lib/consts.ts";
 import type {GameInfo, GameStatus} from "@/pages/game/lib/types.ts";
 import {gameInfoContext} from "@/pages/game/model/game-provider.tsx";
 import TilesToRender from "@/pages/game/ui/tiles-to-render.tsx";
+import GameOverBlanket from "@/pages/game/ui/game-over-blanket.tsx";
 
 export default function Board() {
   const {history, currentHistoryIndex} = useContext(gameInfoContext) as GameInfo;
@@ -23,9 +24,7 @@ export default function Board() {
         </div>
         
         {gameStatus === 'game over' && (
-          <div className="glass bg-foreground/40 text-background absolute inset-0 grid place-items-center uppercase font-bold text-4xl rounded-md starting:opacity-0 duration-(--animation-duration)">
-            game over
-          </div>
+          <GameOverBlanket />
         )}
       </div>
     </div>

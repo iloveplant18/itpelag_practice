@@ -39,3 +39,11 @@ export type AnimationInfo = {
   keyframes: Keyframe[];
   options: KeyframeAnimationOptions;
 }
+
+export type GameSettings = {
+  boardSize: number;
+}
+
+export type GameSettingsActions = {
+  setBoardSize: (value: number) => void;
+}
