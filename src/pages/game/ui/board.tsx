@@ -1,12 +1,13 @@
 import {useContext} from "react";
-import {boardSize} from "@/pages/game/lib/consts.ts";
 import type {GameInfo, GameStatus} from "@/pages/game/lib/types.ts";
 import {gameInfoContext} from "@/pages/game/model/game-provider.tsx";
 import TilesToRender from "@/pages/game/ui/tiles-to-render.tsx";
 import GameOverBlanket from "@/pages/game/ui/game-over-blanket.tsx";
+import {gameSettingsContext} from "@/features/game-settings";
 
 export default function Board() {
   const {history, currentHistoryIndex} = useContext(gameInfoContext) as GameInfo;
+  const {boardSize} = useContext(gameSettingsContext) as GameSettings;
 
   const gameStatus: GameStatus = history[currentHistoryIndex]?.gameStatus ?? "start";2
 

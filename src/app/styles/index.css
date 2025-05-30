@@ -158,7 +158,6 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
-
 @layer base {
   html {
     width: 300px;

@@ -1,7 +1,9 @@
+import { GameSettings } from "@/features/game-settings";
 import type { AnimationInfo, GameInfo, GameSnapshot, Tile as TileType } from "@/pages/game/lib/types.ts";
 import { gameInfoContext } from "@/pages/game/model/game-provider.tsx";
 import Tile from "@/pages/game/ui/tile.tsx";
 import { ReactElement, useContext } from "react";
+import {gameSettingsContext} from "@/features/game-settings";
 
 
 type MoveInfo = {
@@ -13,6 +15,10 @@ type TileWithAnimationInfo = {
   tileInfo: TileType,
   animationInfo: AnimationInfo,
 };
+
+type TileOptions = {
+  size: number;
+}
 
 const animationDuration = 100;
 
@@ -36,6 +42,10 @@ const initialGameSnapshot: GameSnapshot = {
 
 export default function TilesToRender() {
   const {history, currentHistoryIndex} = useContext(gameInfoContext) as GameInfo;
+  const {boardSize} = useContext(gameSettingsContext) as GameSettings;
+  
+  const tileSize = 100 / boardSize;
+  const tileOptions = {size: tileSize};
   const previousHistoryIndex = currentHistoryIndex - 1;
 
   const previousGameSnapshot: GameSnapshot = history[previousHistoryIndex] ?? initialGameSnapshot;
@@ -43,7 +53,7 @@ export default function TilesToRender() {
 
   const tilesWithAnimations = getTilesWithAnimation(previousGameSnapshot, currentGameSnapshot);
 
-  return createTilesComponents(tilesWithAnimations);
+  return createTilesComponents(tilesWithAnimations, tileOptions);
 }
 
 
@@ -138,11 +148,12 @@ function getDeletedTilesWithAnimation(previousTiles: TileType[], currentTiles: T
   })
 }
 
-function createTilesComponents(tiles: TileWithAnimationInfo[]): ReactElement[] {
+function createTilesComponents(tiles: TileWithAnimationInfo[], tileOptions: TileOptions): ReactElement[] {
   return tiles.map(tile => (
       <Tile
         keyframes={tile.animationInfo.keyframes}
         animationOptions={tile.animationInfo.options}
+        size={tileOptions.size}
         key={tile.tileInfo.id}
         value={tile.tileInfo.value}
         position={tile.tileInfo.position}

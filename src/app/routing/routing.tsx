@@ -12,6 +12,7 @@ export default function Routing() {
           <Route index element={<MenuPage />} />
           <Route path="/game" element={<GamePage />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/menu" element={<MenuPage />} />
         </Route>
       </Routes>
     </HashRouter>

@@ -1,12 +1,12 @@
-import { Button } from "@/shared/ui";
 import { Menu } from "lucide-react";
+import { SidebarTrigger } from "@/shared/ui";
 
 export default function Header() {
   return (
     <header className="content-padding flex items-center justify-between py-2">
-      <Button variant={"outline"}>
+      <SidebarTrigger>
         <Menu />
-      </Button>
+      </SidebarTrigger>
     </header>
   );
 }

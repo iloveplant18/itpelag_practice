@@ -1,5 +1,6 @@
+import { GameSettings, gameSettingsContext } from "@/features/game-settings";
 import { Position } from "@/pages/game/lib/types.ts";
-import { cache, HTMLAttributes, useEffect, useRef } from "react";
+import { cache, HTMLAttributes, useEffect, useRef, useContext } from "react";
 import { twMerge } from "tailwind-merge";
 
 
@@ -8,6 +9,7 @@ type TileProps = HTMLAttributes<HTMLDivElement> & {
   animationOptions?: KeyframeAnimationOptions;
   value: number;
   position: Position;
+  size: number;
 }
 
 const calcStylesByValue = cache((value: number) => {
@@ -30,9 +32,9 @@ const calcStylesByValue = cache((value: number) => {
   }
 })
 
-export default function Tile({keyframes, animationOptions, value, position, className, style, ...props}: TileProps) {
+export default function Tile({keyframes, animationOptions, value, size, position, className, style, ...props}: TileProps) {
   const ref = useRef<HTMLDivElement | null>(null);
-  
+
   useEffect(() => {
     if (ref.current && keyframes) {
       ref.current.animate(keyframes, animationOptions);
@@ -41,8 +43,13 @@ export default function Tile({keyframes, animationOptions, value, position, clas
 
   return (
     <div
-      className={twMerge(`absolute w-1/4 grid place-items-center aspect-square rounded-md border-border border ${calcStylesByValue(value)}`, className)}
-      style={{top: `${25 * position.y}%`, left: `${25 * position.x}%`, ...style}}
+      className={twMerge(`absolute aspect-square grid place-items-center rounded-md border-border border ${calcStylesByValue(value)}`, className)}
+      style={{
+        width: `${size}%`,
+        top: `${size * position.y}%`, 
+        left: `${size * position.x}%`, 
+        ...style
+      }}
       ref={ref}
       {...props}
     >
