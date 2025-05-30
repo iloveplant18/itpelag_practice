@@ -53,9 +53,11 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   --animation-duration: 0.3s;
-  --animate-create: create var(--animation-duration) ease-in-out 1 normal forwards;
+  --animate-create: create var(--animation-duration) ease-in-out 1 normal
+    forwards;
   --animate-move: move var(--animation-duration) ease-in-out 1 normal forwards;
-  --animate-scale-down: scale-down calc(var(--animation-duration) * 3) ease-in-out 1 normal forwards;
+  --animate-scale-down: scale-down calc(var(--animation-duration) * 3)
+    ease-in-out 1 normal forwards;
 
   @keyframes create {
     from {

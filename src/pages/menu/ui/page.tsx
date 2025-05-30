@@ -3,7 +3,7 @@ import { Link } from "react-router";
 
 export default function MenuPage() {
   return (
-    <section className="min-w-40 content-padding mx-auto mt-18 flex w-fit flex-col items-stretch justify-center gap-y-5">
+    <section className="content-padding mx-auto mt-18 flex w-fit min-w-40 flex-col items-stretch justify-center gap-y-5">
       <Button asChild>
         <Link to={"/game"}>Start</Link>
       </Button>

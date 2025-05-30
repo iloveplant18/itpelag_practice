@@ -9,4 +9,4 @@ export class NeverError extends Error {
   constructor(value: never) {
     super(`Impossible value: ${value}`);
   }
-};
+}

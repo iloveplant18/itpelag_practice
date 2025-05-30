@@ -5,14 +5,16 @@ import { createContext, HTMLAttributes } from "react";
 export const gameInfoContext = createContext<GameInfo | null>(null);
 export const gameActionsContext = createContext<GameActions | null>(null);
 
-export default function GameProvider({children}: HTMLAttributes<HTMLElement>) {
+export default function GameProvider({
+  children,
+}: HTMLAttributes<HTMLElement>) {
   const { gameInfo, gameActions } = useGame();
 
   return (
     <gameInfoContext.Provider value={gameInfo}>
       <gameActionsContext.Provider value={gameActions}>
-          {children}
+        {children}
       </gameActionsContext.Provider>
     </gameInfoContext.Provider>
-  )
+  );
 }

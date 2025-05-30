@@ -5,5 +5,5 @@ export default function Page() {
     <div className="content-padding">
       <Settings />
     </div>
-  )
+  );
 }

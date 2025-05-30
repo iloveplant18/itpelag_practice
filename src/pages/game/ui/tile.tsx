@@ -3,14 +3,13 @@ import { Position } from "@/pages/game/lib/types.ts";
 import { cache, HTMLAttributes, useEffect, useRef, useContext } from "react";
 import { twMerge } from "tailwind-merge";
 
-
 type TileProps = HTMLAttributes<HTMLDivElement> & {
   keyframes?: Keyframe[];
   animationOptions?: KeyframeAnimationOptions;
   value: number;
   position: Position;
   size: number;
-}
+};
 
 const calcStylesByValue = cache((value: number) => {
   const remainderFromDivision = value % 254;
@@ -30,9 +29,18 @@ const calcStylesByValue = cache((value: number) => {
     case 128:
       return "bg-chart-5";
   }
-})
+});
 
-export default function Tile({keyframes, animationOptions, value, size, position, className, style, ...props}: TileProps) {
+export default function Tile({
+  keyframes,
+  animationOptions,
+  value,
+  size,
+  position,
+  className,
+  style,
+  ...props
+}: TileProps) {
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -43,17 +51,20 @@ export default function Tile({keyframes, animationOptions, value, size, position
 
   return (
     <div
-      className={twMerge(`absolute aspect-square grid place-items-center rounded-md border-border border ${calcStylesByValue(value)}`, className)}
+      className={twMerge(
+        `border-border absolute grid aspect-square place-items-center rounded-md border ${calcStylesByValue(value)}`,
+        className,
+      )}
       style={{
         width: `${size}%`,
-        top: `${size * position.y}%`, 
-        left: `${size * position.x}%`, 
-        ...style
+        top: `${size * position.y}%`,
+        left: `${size * position.x}%`,
+        ...style,
       }}
       ref={ref}
       {...props}
     >
       {value}
     </div>
-  )
+  );
 }
